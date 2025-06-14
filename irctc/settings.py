@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from corsheaders.defaults import default_headers
 from decouple import config
-
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,9 +31,9 @@ REST_FRAMEWORK = {
     ),
 }
 
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = config('DEBUG', cast=bool, default=False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'railway.User'
 
@@ -149,3 +149,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = list(default_headers) + [
     "x-admin-key",  
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
