@@ -13,6 +13,25 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+
+def create_superuser(request):
+    from django.conf import settings
+
+    if settings.DEBUG and request.GET.get("key") == settings.ADMIN_API_KEY:
+        User = get_user_model()
+
+        if not User.objects.filter(username='admin').exists():
+            User.objects.create_superuser(
+                username='admin',
+                email='admin@example.com',
+                password='admin123'
+            )
+            return JsonResponse({"message": "Superuser created!"})
+        else:
+            return JsonResponse({"message": "Superuser already exists."})
+    return JsonResponse({"error": "Unauthorized"}, status=403)
 
 
 
