@@ -13,15 +13,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
-from django.http import JsonResponse
-from django.core.management import call_command
-from django.conf import settings
 
-def run_migrations(request):
-    if settings.DEBUG and request.GET.get("key") == settings.ADMIN_API_KEY:
-        call_command('migrate')
-        return JsonResponse({"message": "Migrations run successfully!"})
-    return JsonResponse({"error": "Not allowed"}, status=403)
 
 
 
